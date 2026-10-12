@@ -39,6 +39,17 @@ class ArcadeEngine:
         self.screen.bgcolor(self.config.theme.bg_color)
         self.screen.tracer(0)  # Double-buffering: only draw on explicit update
 
+        # Bring window to front on Windows
+        try:
+            root = self.screen._root
+            root.deiconify()
+            root.lift()
+            root.attributes("-topmost", True)
+            root.after(500, lambda: root.attributes("-topmost", False))
+            root.focus_force()
+        except Exception:
+            pass
+
     def start_menu(self) -> None:
         """Displays arcade menu launcher."""
         if self.current_game:
